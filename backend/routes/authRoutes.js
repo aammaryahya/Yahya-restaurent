@@ -4,7 +4,7 @@ const { register, login, profile, deleteUser } = require('../controllers/authCon
 const auth = require('../middleware/auth');
 const role = require('../middleware/role');
 
-router.post('/register', register);
+router.post('/register', auth, role(["admin"]), register);
 router.post('/login', login);
 router.get('/profile', auth, profile);
 router.delete("/:id", auth, role(['admin']), deleteUser);
