@@ -16,7 +16,7 @@ exports.getOrders = async (req, res) => {
 //create a new order
 exports.createOrder = async (req, res) => {
     try {
-        const { tableId, items } = req.body;
+        const { tableId, items, notes } = req.body;
 
         const detailItems = [];
         let total = 0;
@@ -42,7 +42,8 @@ exports.createOrder = async (req, res) => {
         const order = await Order.create({
             tableId,
             items: detailItems,
-            total
+            total,
+            notes: notes || ""
         });
 
         res.status(201).json({ message: 'Order created successfully', order });
@@ -72,6 +73,23 @@ exports.deleteOrder = async (req, res) => {
     try {
         await Order.findByIdAndDelete(req.params.id);
         res.status(200).json({ message: 'Order deleted successfully' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+//update order notes
+exports.updateOrderNotes = async (req, res) => {
+    try {
+        const order = await Order.findById(req.params.id);
+        if (!order) {
+            return res.status(404).json({ message: 'Order not found' });
+        }
+
+        order.notes = req.body.notes;
+        await order.save();
+
+        res.status(200).json({ message: 'Order notes updated successfully', order });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
