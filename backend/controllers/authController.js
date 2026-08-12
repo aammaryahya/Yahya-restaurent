@@ -67,5 +67,45 @@ exports.deleteUser = async (req, res) => {
     }
 };
 
-//eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhNzNhNTkxZDJiYzI0YzI5MDA3NTMwZiIsInJvbGUiOiJhZG1pbiIsImlhdCI6MTc4NTk2NDA4NiwiZXhwIjoxNzg1OTY3Njg2fQ.CtcsZ6HJA_ggbd-fl8sHUp85xD_Qh1DBQr1fAmMZCiw
-//6a73a591d2bc24c29007530f
+exports.updateProfile = async (req, res) => {
+    try {
+        const { name } = req.body;
+
+        const updatedUser = await User.findByIdAndUpdate(
+            req.user.id,
+            { name },
+            { new: true }
+        );
+
+        res.json({
+            message: "Profil mis à jour",
+            user: updatedUser
+        });
+    } catch (err) {
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
+
+exports.changePassword = async (req, res) => {
+    try {
+        const { oldPassword, newPassword } = req.body;
+
+        const user = await User.findById(req.user.id);
+
+        // Vérifier ancien mot de passe
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Ancien mot de passe incorrect" });
+        }
+
+        // Hash nouveau mot de passe
+        const salt = await bcrypt.genSalt(10);
+        user.password = await bcrypt.hash(newPassword, salt);
+
+        await user.save();
+
+        res.json({ message: "Mot de passe changé avec succès" });
+    } catch (err) {
+        res.status(500).json({ message: "Erreur serveur" });
+    }
+};
