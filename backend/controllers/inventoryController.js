@@ -47,23 +47,50 @@ exports.addTransaction = async (req, res) => {
 
         const ingredient = await Ingredient.findById(req.params.id);
         if (!ingredient) {
-            return res.status(404).json({ message: "Ingredient not found" });
+            return res.status(404).json({ message: "Ingrédient introuvable." });
         }
 
-        // Update stock based on transaction type
-        if (type === "in") ingredient.stock += quantity;
-        if (type === "out") ingredient.stock -= quantity;
-        if (type === "adjust") ingredient.stock = quantity;
+        let newStock = ingredient.stock;
 
-// Add transaction to the ingredient
-        ingredient.transactions.push({ type, quantity, note });
+        if (type === "in") {
+            newStock += quantity;
+        }
+
+        if (type === "out") {
+            if (ingredient.stock - quantity < 0) {
+                return res.status(400).json({
+                    message: "Impossible de retirer cette quantité : stock insuffisant."
+                });
+            }
+            newStock -= quantity;
+        }
+
+        if (type === "adjust") {
+            if (quantity < 0) {
+                return res.status(400).json({
+                    message: "La quantité ajustée ne peut pas être négative."
+                });
+            }
+            newStock = quantity;
+        }
+
+        ingredient.stock = newStock;
+
+        ingredient.transactions.push({
+            type,
+            quantity,
+            note,
+            date: new Date()
+        });
+
         await ingredient.save();
 
-        res.json({ message: "Transaction added", ingredient });
+        res.json({ message: "Transaction enregistrée.", ingredient });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
-};  
+};
 
 //Low stock alert for ingredients
 exports.getlowStock = async (req, res) => {
