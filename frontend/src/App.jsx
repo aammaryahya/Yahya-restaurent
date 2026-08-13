@@ -13,6 +13,17 @@ import Menu from "./pages/admin/Menu.jsx";
 import Orders from "./pages/admin/Orders.jsx";
 import Inventory from "./pages/admin/Inventory.jsx";
 
+//Chef pages
+import ChefOrders from "./pages/chef/ChefOrders.jsx";
+import ChefInventory from "./pages/chef/ChefInventory.jsx";
+import MenuStatus from "./pages/chef/MenuStatus.jsx";
+
+//Waiter pages
+import WaiterTables from "./pages/waiter/WaiterTables.jsx";
+import WaiterOrders from "./pages/waiter/WaiterOrders.jsx";
+import WaiterCreateOrders from "./pages/waiter/WaiterCreateOrder.jsx";
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -78,15 +89,6 @@ function App() {
         />
 
         <Route
-          path="/waiter"
-          element={
-            <ProtectedRoute role="waiter">
-              <Waiter />
-            </ProtectedRoute>
-          }
-        />
-
-        <Route
           path="/chef"
           element={
             <ProtectedRoute role="chef">
@@ -95,6 +97,70 @@ function App() {
           }
         />
 
+        <Route
+          path="/chef/orders"
+          element={
+            <ProtectedRoute role="chef">
+              <ChefOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/chef/inventory"
+          element={
+            <ProtectedRoute role="chef">
+              <ChefInventory />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/chef/menu-status"
+          element={
+            <ProtectedRoute role="chef">
+              <MenuStatus />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/waiter"
+          element={
+            <ProtectedRoute requiredRole="waiter">
+              <Waiter />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/waiter/orders"
+          element={
+            <ProtectedRoute requiredRole="waiter">
+              <WaiterOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/waiter/tables"
+          element={
+            <ProtectedRoute requiredRole="waiter">
+              <WaiterTables />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/waiter/create-order"
+          element={
+            <ProtectedRoute requiredRole="waiter">
+              <WaiterCreateOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        
         <Route
           path="/cashier"
           element={
