@@ -5,7 +5,7 @@ const { getIngredients, createIngredient, updateIngredient,
 const auth = require("../middleware/auth");
 const role = require("../middleware/role");
 
-router.get("/", auth, role(["admin", "chef"]), getIngredients);
+router.get("/", auth, role(["admin", "chef", "waiter"]), getIngredients);
 router.post("/", auth, role("admin"), createIngredient);
 router.put("/:id", auth, role("admin"), updateIngredient);
 router.delete("/:id", auth, role("admin"), deleteIngredient);

@@ -7,7 +7,7 @@ const role = require('../middleware/role');
 router.get('/', auth, getMenu);
 
 router.post('/', auth, role(['admin']), createMenuItem);
-router.put('/:id', auth, role(['admin']), updateMenuItem);
+router.put('/:id', auth, role(['admin', 'chef']), updateMenuItem);
 router.delete('/:id', auth, role(['admin']), deleteMenuItem);
 
 

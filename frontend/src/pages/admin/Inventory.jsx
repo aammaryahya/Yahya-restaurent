@@ -276,13 +276,14 @@ export default function Inventory() {
                             onChange={(e) => setNewUnit(e.target.value)}
                         />
 
+                        <label className="font-semibold">Stock initial</label>
                         <input className="border p-2 rounded w-full mb-3"
                             type="number"
-                            placeholder="Stock initial"
                             value={newStock}
                             onChange={(e) => setNewStock(Number(e.target.value))}
                         />
 
+                        <label className="font-semibold">Stock minimum</label>
                         <input className="border p-2 rounded w-full mb-3"
                             type="number"
                             placeholder="Stock minimum"
