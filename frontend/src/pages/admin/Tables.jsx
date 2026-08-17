@@ -24,6 +24,14 @@ export default function Tables() {
         fetchTables();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchTables(); 
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const fetchTables = async () => {
         const token = localStorage.getItem("token");
 

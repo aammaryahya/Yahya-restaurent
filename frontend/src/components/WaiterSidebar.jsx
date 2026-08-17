@@ -10,6 +10,8 @@ export default function WaiterSidebar() {
                 <Link className="p-2 rounded hover:bg-gray-700" to="/waiter/orders">🧾 Commandes</Link>
                 <Link className="p-2 rounded hover:bg-gray-700" to="/waiter/tables">🍽️ Tables</Link>
                 <Link className="p-2 rounded hover:bg-gray-700" to="/waiter/create-order">📋 Créer une commande</Link>
+                <Link className="p-2 rounded hover:bg-gray-700" to="/waiter/waiterInventory">📋 Inventaire</Link>
+
             </nav>
         </div>
     );

@@ -25,6 +25,14 @@ export default function Employees() {
         fetchEmployees();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchEmployees();
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const fetchEmployees = async () => {
         const token = localStorage.getItem("token");
 

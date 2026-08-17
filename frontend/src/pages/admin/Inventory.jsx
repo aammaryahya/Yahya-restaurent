@@ -31,6 +31,15 @@ export default function Inventory() {
         fetchIngredients();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchIngredients();
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
+
     const fetchIngredients = async () => {
         const token = localStorage.getItem("token");
 

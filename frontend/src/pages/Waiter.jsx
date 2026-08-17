@@ -14,45 +14,47 @@ export default function Waiter() {
         fetchDashboardData();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchDashboardData();
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const fetchDashboardData = async () => {
         const token = localStorage.getItem("token");
 
+        // COMMANDES
         const ordersRes = await fetch("http://localhost:5000/api/orders", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const orders = await ordersRes.json();
 
-        if (!Array.isArray(orders)) {
-            console.log("Erreur API commandes:", orders);
-            return;
-        }
+        if (!Array.isArray(orders)) return;
 
         setPending(orders.filter(o => o.status === "pending").length);
         setPreparing(orders.filter(o => o.status === "preparing").length);
         setReady(orders.filter(o => o.status === "ready").length);
         setDelivered(orders.filter(o => o.status === "delivered").length);
 
+        // INVENTAIRE
         const stockRes = await fetch("http://localhost:5000/api/inventory", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const stock = await stockRes.json();
 
-        if (!Array.isArray(stock)) {
-            console.log("Erreur API inventaire:", stock);
-            return;
-        }
+        if (!Array.isArray(stock)) return;
 
         setLowStock(stock.filter(i => i.stock < i.minStock).length);
 
+        // MENU
         const menuRes = await fetch("http://localhost:5000/api/menu", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const menu = await menuRes.json();
 
-        if (!Array.isArray(menu)) {
-            console.log("Erreur API menu:", menu);
-            return;
-        }
+        if (!Array.isArray(menu)) return;
 
         setUnavailable(menu.filter(m => !m.available).length);
     };

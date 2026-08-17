@@ -30,6 +30,14 @@ export default function MenuItems() {
         fetchItems();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchItems();
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const fetchItems = async () => {
         const token = localStorage.getItem("token");
 

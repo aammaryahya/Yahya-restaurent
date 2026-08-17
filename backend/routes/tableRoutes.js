@@ -7,7 +7,7 @@ const role = require('../middleware/role');
 router.get('/', auth, getTables);
 
 router.post('/', auth, role(['admin']), createTable);
-router.put('/:id', auth, role(['admin']), updateTable);
+router.put('/:id', auth, role(['admin', 'waiter', 'cashier']), updateTable);
 router.delete('/:id', auth, role(['admin']), deleteTable);
 
 

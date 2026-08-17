@@ -1,17 +1,28 @@
 import { useEffect, useState } from "react";
 import WaiterLayout from "../../layouts/WaiterLayout";
-import { useParams, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function WaiterCreateOrder() {
-    const { tableId } = useParams();
     const navigate = useNavigate();
 
     const [menu, setMenu] = useState([]);
     const [items, setItems] = useState([]);
     const [note, setNote] = useState("");
+    const [tables, setTables] = useState([]);
+    const [selectedTableId, setSelectedTableId] = useState("");
 
     useEffect(() => {
         fetchMenu();
+        fetchTables();
+    }, []);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchMenu();
+            fetchTables();
+        }, 2000);
+
+        return () => clearInterval(interval);
     }, []);
 
     const fetchMenu = async () => {
@@ -22,7 +33,24 @@ export default function WaiterCreateOrder() {
         });
 
         const data = await res.json();
-        setMenu(data);
+        const availableOnly = data.filter(item => item.available === true);
+        setMenu(availableOnly);
+    };
+
+    const fetchTables = async () => {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("http://localhost:5000/api/tables", {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+
+        const data = await res.json();
+        const list = data.tables || data;
+
+        // Tables disponibles ou réservées
+        const filtered = list.filter(t => t.status === "available" || t.status === "reserved");
+
+        setTables(filtered);
     };
 
     const addItem = (menuItem) => {
@@ -58,17 +86,46 @@ export default function WaiterCreateOrder() {
     const sendOrder = async () => {
         const token = localStorage.getItem("token");
 
-        await fetch("http://localhost:5000/api/orders", {
+        if (!selectedTableId) {
+            alert("Choisis une table !");
+            return;
+        }
+
+        if (items.length === 0) {
+            alert("Ajoute au moins un item !");
+            return;
+        }
+
+        const res = await fetch("http://localhost:5000/api/orders", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 Authorization: `Bearer ${token}`
             },
             body: JSON.stringify({
-                tableId,
-                items,
+                tableId: selectedTableId,
+                items: items.map(i => ({
+                    menuItemId: i.menuItemId,
+                    quantity: i.quantity
+                })),
                 notes: note
             })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            alert(data.message || "Erreur création commande");
+            return;
+        }
+
+        await fetch(`http://localhost:5000/api/tables/${selectedTableId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ status: "occupied" })
         });
 
         navigate("/waiter/orders");
@@ -79,6 +136,23 @@ export default function WaiterCreateOrder() {
             <div className="p-6">
                 <h1 className="text-2xl font-bold mb-6">Créer une commande</h1>
 
+                {/* TABLE SELECT */}
+                <div className="mb-6">
+                    <label className="font-semibold">Sélectionner une table</label>
+                    <select
+                        className="border p-2 rounded w-full mt-2"
+                        value={selectedTableId}
+                        onChange={(e) => setSelectedTableId(e.target.value)}
+                    >
+                        <option value="">-- Choisir une table --</option>
+                        {tables.map(t => (
+                            <option key={t._id} value={t._id}>
+                                Table {t.number} ({t.status})
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
                 {/* MENU GRID */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8">
                     {menu.map(item => (
@@ -86,13 +160,7 @@ export default function WaiterCreateOrder() {
 
                             <h2 className="font-bold text-lg mb-2">{item.name}</h2>
 
-                            <p className="text-gray-600 mb-3">
-                                {item.available ? (
-                                    <span className="text-green-600">Disponible</span>
-                                ) : (
-                                    <span className="text-red-600">Indisponible</span>
-                                )}
-                            </p>
+                            <p className="text-green-600 mb-3">Disponible</p>
 
                             {/* Quantité */}
                             <div className="flex items-center gap-3 mt-3">

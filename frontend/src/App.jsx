@@ -22,6 +22,11 @@ import MenuStatus from "./pages/chef/MenuStatus.jsx";
 import WaiterTables from "./pages/waiter/WaiterTables.jsx";
 import WaiterOrders from "./pages/waiter/WaiterOrders.jsx";
 import WaiterCreateOrders from "./pages/waiter/WaiterCreateOrder.jsx";
+import WaiterInventory from "./pages/waiter/WaiterInventory.jsx";
+
+//Cashier pages
+import CashierOrders from "./pages/cashier/CashierOrders.jsx";
+import CashierOrderDetails from "./pages/cashier/CashierOrderDetails.jsx";
 
 
 function App() {
@@ -143,6 +148,15 @@ function App() {
         />
 
         <Route
+          path="/waiter/orders/:tableId"
+          element={
+            <ProtectedRoute requiredRole="waiter">
+              <WaiterOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
           path="/waiter/tables"
           element={
             <ProtectedRoute requiredRole="waiter">
@@ -160,15 +174,43 @@ function App() {
           }
         />
 
+        <Route
+          path="/waiter/WaiterInventory"
+          element={
+            <ProtectedRoute requiredRole="waiter">
+              <WaiterInventory />
+            </ProtectedRoute>
+          }
+        />
+
         
         <Route
           path="/cashier"
           element={
-            <ProtectedRoute role="cashier">
+            <ProtectedRoute requiredRole="cashier">
               <Cashier />
             </ProtectedRoute>
           }
         />
+
+        <Route
+          path="/cashier/orders"
+          element={
+            <ProtectedRoute requiredRole="cashier">
+              <CashierOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/cashier/orders/:orderId"
+          element={
+            <ProtectedRoute requiredRole="cashier">
+              <CashierOrderDetails />
+            </ProtectedRoute>
+          }
+        />
+
 
         {/* Route par défaut */}
         <Route path="*" element={<Login />} />
