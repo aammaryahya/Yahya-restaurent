@@ -8,6 +8,14 @@ export default function ChefOrders() {
         fetchOrders();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchOrders();
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const fetchOrders = async () => {
         const token = localStorage.getItem("token");
 

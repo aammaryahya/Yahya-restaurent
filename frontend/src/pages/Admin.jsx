@@ -13,6 +13,14 @@ export default function Dashboard() {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchData();
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const fetchData = async () => {
         const token = localStorage.getItem("token");
 

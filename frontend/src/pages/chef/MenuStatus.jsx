@@ -8,6 +8,14 @@ export default function MenuStatus() {
         fetchMenu();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchMenu();
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const fetchMenu = async () => {
         const token = localStorage.getItem("token");
 

@@ -12,6 +12,14 @@ export default function Chef() {
         fetchDashboardData();
     }, []);
 
+    useEffect(() => {
+        const interval = setInterval(() => {
+            fetchDashboardData();
+        }, 2000);
+
+        return () => clearInterval(interval);
+    }, []);
+
     const fetchDashboardData = async () => {
         const token = localStorage.getItem("token");
 

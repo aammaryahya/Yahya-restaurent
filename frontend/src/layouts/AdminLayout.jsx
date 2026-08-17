@@ -3,7 +3,6 @@ import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
-
 export default function AdminLayout({ children }) {
     const [openMenu, setOpenMenu] = useState(false);
     const [showPasswordModal, setShowPasswordModal] = useState(false);

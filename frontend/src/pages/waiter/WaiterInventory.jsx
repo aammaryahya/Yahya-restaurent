@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import ChefLayout from "../../layouts/ChefLayout";
+import WaiterLayout from "../../layouts/WaiterLayout";
 
-export default function ChefInventory() {
+export default function WaiterInventory() {
     const [ingredients, setIngredients] = useState([]);
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export default function ChefInventory() {
             body: JSON.stringify({
                 type,
                 quantity,
-                note: "Modification par le chef"
+                note: "Modification par le serveur"
             })
         });
 
@@ -50,13 +50,14 @@ export default function ChefInventory() {
     };
 
     return (
-        <ChefLayout>
+        <WaiterLayout>
             <div className="p-6">
-                <h1 className="text-2xl font-bold mb-6">Stock critique</h1>
+                <h1 className="text-2xl font-bold mb-6">Stock</h1>
 
-                <div className="bg-white shadow p-4 rounded">
+                {/* GRID 3 PAR LIGNE */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                     {ingredients.map(i => (
-                        <div key={i._id} className="border p-4 mb-4 rounded">
+                        <div key={i._id} className="bg-white shadow p-4 rounded border">
                             <h2 className="font-bold">{i.name}</h2>
                             <p>Stock : {i.stock}{i.unit}</p>
                             <p>Minimum : {i.minStock}{i.unit}</p>
@@ -80,6 +81,6 @@ export default function ChefInventory() {
                     ))}
                 </div>
             </div>
-        </ChefLayout>
+        </WaiterLayout>
     );
 }

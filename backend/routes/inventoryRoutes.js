@@ -11,7 +11,7 @@ router.put("/:id", auth, role("admin"), updateIngredient);
 router.delete("/:id", auth, role("admin"), deleteIngredient);
 
 
-router.post("/:id/transaction", auth, role(["admin", "chef"]), addTransaction);
-router.get("/alerts/low-stock", auth, role(["admin", "chef"]), getlowStock);
+router.post("/:id/transaction", auth, role(["admin", "chef", "waiter"]), addTransaction);
+router.get("/alerts/low-stock", auth, role(["admin", "chef", "waiter"]), getlowStock);
 
 module.exports = router;

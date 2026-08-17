@@ -1,9 +1,9 @@
-import WaiterSidebar from "../components/WaiterSidebar";
+import CashierSidebar from "../components/CashierSidebar";
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 
-export default function WaiterLayout({ children }) {
+export default function CashierLayout({ children }) {
     const [openMenu, setOpenMenu] = useState(false);
     const [showPasswordModal, setShowPasswordModal] = useState(false);
     const [showProfileModal, setShowProfileModal] = useState(false);
@@ -39,7 +39,7 @@ export default function WaiterLayout({ children }) {
 
     return (
         <div className="flex bg-gray-100 min-h-screen">
-            <WaiterSidebar />
+            <CashierSidebar />
 
             <div className="flex-1">
                 {/* HEADER */}
@@ -61,7 +61,7 @@ export default function WaiterLayout({ children }) {
                                 setOpenMenu(!openMenu);
                             }}
                         >
-                            {user?.name || "Serveur"} ▼
+                            {user?.name || "caishier"} ▼
                         </button>
 
                         {openMenu && (
