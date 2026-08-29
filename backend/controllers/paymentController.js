@@ -1,3 +1,4 @@
+const { getIO } = require("../socket");
 const Payment = require('../models/Payments');
 const Order = require('../models/Order');
 
@@ -19,13 +20,18 @@ exports.createPayment = async (req, res) => {
         const payment = await Payment.create({
             orderId,
             subtotal,
-            taxRate,
+            tax,
             taxAmount,
             discount: discount || 0,
             total,
             method,
             status: 'paid'
         });
+
+        const io = getIO();
+
+        io.emit("paymentsUpdated", { action: "create", payment });
+
 
         res.status(201).json({ message: 'Payment created successfully', payment });
     } catch (error) {
@@ -53,6 +59,11 @@ exports.refundPayment = async (req, res) => {
 
         payment.status = 'refunded';
         await payment.save();
+
+        const io = getIO();
+
+        io.emit("paymentsUpdated", { action: "refund", payment });
+
 
         res.status(200).json({ message: 'Payment refunded successfully', payment });
     } catch (error) {

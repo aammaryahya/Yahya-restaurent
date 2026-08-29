@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import ChefLayout from "../../layouts/ChefLayout";
+import { socket } from "../../socket";
+
 
 export default function ChefOrders() {
     const [orders, setOrders] = useState([]);
@@ -9,11 +11,13 @@ export default function ChefOrders() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("ordersUpdated", () => {
             fetchOrders();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("ordersUpdated");
+        };
     }, []);
 
     const fetchOrders = async () => {

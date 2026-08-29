@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import CashierLayout from "../../layouts/CashierLayout";
+import { socket } from "../../socket";
+
 
 export default function CashierOrderDetails() {
     const { orderId } = useParams();
@@ -11,11 +13,13 @@ export default function CashierOrderDetails() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            fetchOrder(); 
-        }, 2000);
+        socket.on("ordersUpdated", () => {
+            fetchOrder();
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("ordersUpdated");
+        };
     }, []);
 
     const fetchOrder = async () => {

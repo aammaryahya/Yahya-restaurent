@@ -1,3 +1,4 @@
+const { getIO } = require("../socket");
 const Order = require('../models/Order');
 
 // Get all kitchen orders
@@ -7,7 +8,7 @@ exports.getKitchenOrders = async (req, res) => {
             .sort({ status: 1, createdAt: 1 })
             .populate('tableId')
             .populate('items.menuItemId');
-        
+
         const colorMap = {
             'pending': 'yellow',
             'preparing': 'orange',
@@ -18,7 +19,7 @@ exports.getKitchenOrders = async (req, res) => {
             ...order.toObject(),
             color: colorMap[order.status] || 'grey'
         }));
-        
+
         res.json(ordersWithColors);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
@@ -29,6 +30,10 @@ exports.getKitchenOrders = async (req, res) => {
 exports.updateKitchenStatus = async (req, res) => {
     try {
         const order = await Order.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
+
+        const io = getIO();
+
+        io.emit("kitchenUpdated", { action: "update", order });
 
         res.status(200).json({ message: 'Order status updated', order });
     } catch (error) {

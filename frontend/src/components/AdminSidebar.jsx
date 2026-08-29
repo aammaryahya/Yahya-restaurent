@@ -12,6 +12,7 @@ export default function AdminSidebar() {
                 <Link className="p-2 rounded hover:bg-gray-700" to="/admin/menu">📋 Menu</Link>
                 <Link className="p-2 rounded hover:bg-gray-700" to="/admin/orders">🧾 Commandes</Link>
                 <Link className="p-2 rounded hover:bg-gray-700" to="/admin/inventory">📦 Inventaire</Link>
+                <Link className="p-2 rounded hover:bg-gray-700" to="/admin/inventoryTransactions">📜 Transactions de stock</Link>
             </nav>
         </div>
     );

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import WaiterLayout from "../../layouts/WaiterLayout";
 import { Link } from "react-router-dom";
+import { socket } from "../../socket";
+
 
 export default function WaiterTables() {
     const [tables, setTables] = useState([]);
@@ -10,11 +12,13 @@ export default function WaiterTables() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("tablesUpdated", () => {
             fetchTables();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("tablesUpdated");
+        };
     }, []);
 
     const fetchTables = async () => {

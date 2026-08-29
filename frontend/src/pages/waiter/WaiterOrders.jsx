@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import WaiterLayout from "../../layouts/WaiterLayout";
+import { socket } from "../../socket";
+
 
 export default function WaiterOrders() {
     const [orders, setOrders] = useState([]);
@@ -9,13 +11,16 @@ export default function WaiterOrders() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("ordersUpdated", () => {
             fetchOrders();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("ordersUpdated");
+        };
     }, []);
 
+    
     const fetchOrders = async () => {
         const token = localStorage.getItem("token");
 

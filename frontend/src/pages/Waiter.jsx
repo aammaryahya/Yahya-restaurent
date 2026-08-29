@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import WaiterLayout from "../layouts/WaiterLayout";
+import { socket } from "../socket";
+
 
 export default function Waiter() {
     const [pending, setPending] = useState(0);
@@ -15,12 +17,25 @@ export default function Waiter() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("ordersUpdated", () => {
             fetchDashboardData();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        socket.on("inventoryUpdated", () => {
+            fetchDashboardData();
+        });
+
+        socket.on("menuUpdated", () => {
+            fetchDashboardData();
+        });
+
+        return () => {
+            socket.off("ordersUpdated");
+            socket.off("inventoryUpdated");
+            socket.off("menuUpdated");
+        };
     }, []);
+
 
     const fetchDashboardData = async () => {
         const token = localStorage.getItem("token");

@@ -1,3 +1,4 @@
+const { getIO } = require("../socket");
 const MenuItem = require('../models/MenuItem');
 
 // Get all menu items       
@@ -14,6 +15,10 @@ exports.getMenu = async (req, res) => {
 exports.createMenuItem = async (req, res) => {
     try {
         const item = await MenuItem.create(req.body);
+        const io = getIO();
+
+        io.emit("menuUpdated", { action: "create", item });
+
         res.json({ message: 'Menu item created successfully', item });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -25,6 +30,10 @@ exports.createMenuItem = async (req, res) => {
 exports.updateMenuItem = async (req, res) => {
     try {
         const item = await MenuItem.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const io = getIO();
+
+        io.emit("menuUpdated", { action: "update", item });
+
         res.json({ message: 'Menu item updated successfully', item });
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -35,6 +44,10 @@ exports.updateMenuItem = async (req, res) => {
 exports.deleteMenuItem = async (req, res) => {
     try {
         await MenuItem.findByIdAndDelete(req.params.id);
+        const io = getIO();
+
+        io.emit("menuUpdated", { action: "delete", id: req.params.id });
+
         res.json({ message: 'Menu item deleted successfully' });
     } catch (err) {
         res.status(500).json({ error: err.message });

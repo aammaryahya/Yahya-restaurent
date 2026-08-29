@@ -1,3 +1,4 @@
+const { getIO } = require("../socket");
 const Order = require('../models/Order');
 const MenuItem = require('../models/MenuItem');
 
@@ -46,6 +47,12 @@ exports.createOrder = async (req, res) => {
             notes: notes || ""
         });
 
+        const io = getIO();        
+
+
+        io.emit("ordersUpdated", { action: "create", order });
+
+
         res.status(201).json({ message: 'Order created successfully', order });
 
     } catch (error) {
@@ -68,6 +75,10 @@ exports.updateOrderStatus = async (req, res) => {
             return res.status(404).json({ message: "Order not found" });
         }
 
+        const io = getIO();
+
+        io.emit("ordersUpdated", { action: "update", order });
+
         res.status(200).json({ message: 'Order status updated successfully', order });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -78,6 +89,12 @@ exports.updateOrderStatus = async (req, res) => {
 exports.deleteOrder = async (req, res) => {
     try {
         await Order.findByIdAndDelete(req.params.id);
+
+        const io = getIO();
+
+        io.emit("ordersUpdated", { action: "delete", id: req.params.id });
+
+
         res.status(200).json({ message: 'Order deleted successfully' });
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -94,6 +111,11 @@ exports.updateOrderNotes = async (req, res) => {
 
         order.notes = req.body.notes;
         await order.save();
+
+        const io = getIO();
+
+        io.emit("orderUpdated", { action: "updateNote", order });
+
 
         res.status(200).json({ message: 'Order notes updated successfully', order });
     } catch (error) {

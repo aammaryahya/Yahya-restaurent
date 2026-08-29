@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import ChefLayout from "../../layouts/ChefLayout";
+import { socket } from "../../socket";
+
 
 export default function MenuStatus() {
     const [menuItems, setMenuItems] = useState([]);
@@ -9,11 +11,13 @@ export default function MenuStatus() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("menuUpdated", () => {
             fetchMenu();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("menuUpdated");
+        };
     }, []);
 
     const fetchMenu = async () => {

@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import WaiterLayout from "../../layouts/WaiterLayout";
 import { useNavigate } from "react-router-dom";
+import { socket } from "../../socket";
+
 
 export default function WaiterCreateOrder() {
     const navigate = useNavigate();
@@ -17,12 +19,17 @@ export default function WaiterCreateOrder() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("menuUpdated", () => {
             fetchMenu();
+        });
+        socket.on("tablesUpdated", () => {
             fetchTables();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("menuUpdated");
+            socket.off("tablesUpdated");
+        };
     }, []);
 
     const fetchMenu = async () => {

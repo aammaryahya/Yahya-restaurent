@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CashierLayout from "../layouts/CashierLayout";
+import { socket } from "../socket";
 
 export default function Cashier() {
 
@@ -21,14 +22,15 @@ export default function Cashier() {
     };
 
     useEffect(() => {
-        fetchData(); 
+        socket.on("paymentsUpdated", () => {
+            fetchData();
+        });
 
-        const interval = setInterval(() => {
-            fetchData(); 
-        }, 2000);
-
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("paymentsUpdated");
+        };
     }, []);
+
 
     return (
         <CashierLayout>

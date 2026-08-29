@@ -37,7 +37,14 @@ const IngredientSchema = new mongoose.Schema({
             },
             note: {
                 type: String
-            }
+            },
+            user: {
+                type: String,
+                required: false
+            },
+            oldStock: Number,
+            newStock: Number,
+            difference: Number
         }
     ]
 }); 

@@ -12,6 +12,7 @@ import Tables from "./pages/admin/Tables.jsx";
 import Menu from "./pages/admin/Menu.jsx";
 import Orders from "./pages/admin/Orders.jsx";
 import Inventory from "./pages/admin/Inventory.jsx";
+import InventoryTransactions from "./pages/admin/InventoryTransactions.jsx"
 
 //Chef pages
 import ChefOrders from "./pages/chef/ChefOrders.jsx";
@@ -94,6 +95,16 @@ function App() {
         />
 
         <Route
+          path="/admin/InventoryTransactions"
+          element={
+            <ProtectedRoute requiredRole="admin">
+              <InventoryTransactions />
+            </ProtectedRoute>
+          }
+        />
+
+        {/*Pages chef*/}
+        <Route
           path="/chef"
           element={
             <ProtectedRoute role="chef">
@@ -129,6 +140,7 @@ function App() {
           }
         />
 
+        {/*Pages serveur*/}
         <Route
           path="/waiter"
           element={
@@ -183,7 +195,7 @@ function App() {
           }
         />
 
-        
+        {/*Pages caissier*/}
         <Route
           path="/cashier"
           element={

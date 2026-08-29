@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import CashierLayout from "../../layouts/CashierLayout";
 import { Link } from "react-router-dom";
+import { socket } from "../../socket";
+
 
 export default function CashierOrders() {
     const [orders, setOrders] = useState([]);
@@ -10,11 +12,13 @@ export default function CashierOrders() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("ordersUpdated", () => {
             fetchOrders();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("ordersUpdated");
+        };
     }, []);
 
     const fetchOrders = async () => {

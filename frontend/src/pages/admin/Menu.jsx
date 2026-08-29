@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
+import { socket } from "../../socket";
+
 
 export default function MenuItems() {
     const [items, setItems] = useState([]);
@@ -31,11 +33,13 @@ export default function MenuItems() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("menuUpdated", () => {
             fetchItems();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("menuUpdated");
+        };
     }, []);
 
     const fetchItems = async () => {

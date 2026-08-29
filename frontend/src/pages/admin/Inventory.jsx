@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
+import { socket } from "../../socket";
+
 
 export default function Inventory() {
     const [ingredients, setIngredients] = useState([]);
@@ -32,12 +34,15 @@ export default function Inventory() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("inventoryUpdated", () => {
             fetchIngredients();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("inventoryUpdated");
+        };
     }, []);
+
 
 
     const fetchIngredients = async () => {

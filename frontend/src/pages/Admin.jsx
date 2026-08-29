@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../layouts/AdminLayout";
 import { Link } from "react-router-dom";
+import { socket } from "../socket";
 
 
 export default function Dashboard() {
@@ -14,12 +15,30 @@ export default function Dashboard() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("ordersUpdated", () => {
             fetchData();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        socket.on("tablesUpdated", () => {
+            fetchData();
+        });
+
+        socket.on("inventoryUpdated", () => {
+            fetchData();
+        });
+
+        socket.on("menuUpdated", () => {
+            fetchData();
+        });
+
+        return () => {
+            socket.off("ordersUpdated");
+            socket.off("tablesUpdated");
+            socket.off("inventoryUpdated");
+            socket.off("menuUpdated");
+        };
     }, []);
+
 
     const fetchData = async () => {
         const token = localStorage.getItem("token");

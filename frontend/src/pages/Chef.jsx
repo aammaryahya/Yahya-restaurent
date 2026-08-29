@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import ChefLayout from "../layouts/ChefLayout";
+import { socket } from "../socket";
+
 
 export default function Chef() {
     const [pending, setPending] = useState(0);
@@ -13,12 +15,25 @@ export default function Chef() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
+        socket.on("ordersUpdated", () => {
             fetchDashboardData();
-        }, 2000);
+        });
 
-        return () => clearInterval(interval);
+        socket.on("inventoryUpdated", () => {
+            fetchDashboardData();
+        });
+
+        socket.on("menuUpdated", () => {
+            fetchDashboardData();
+        });
+
+        return () => {
+            socket.off("ordersUpdated");
+            socket.off("inventoryUpdated");
+            socket.off("menuUpdated");
+        };
     }, []);
+
 
     const fetchDashboardData = async () => {
         const token = localStorage.getItem("token");

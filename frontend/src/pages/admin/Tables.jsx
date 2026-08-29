@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import AdminLayout from "../../layouts/AdminLayout";
+import { socket } from "../../socket";
+
 
 export default function Tables() {
     const [tables, setTables] = useState([]);
@@ -25,11 +27,13 @@ export default function Tables() {
     }, []);
 
     useEffect(() => {
-        const interval = setInterval(() => {
-            fetchTables(); 
-        }, 2000);
+        socket.on("tablesUpdated", () => {
+            fetchTables();
+        });
 
-        return () => clearInterval(interval);
+        return () => {
+            socket.off("tablesUpdated");
+        };
     }, []);
 
     const fetchTables = async () => {
