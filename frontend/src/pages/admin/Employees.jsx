@@ -21,6 +21,10 @@ export default function Employees() {
     // Supprimer
     const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
+    const [passwordId, setPasswordId] = useState(null);
+    const [newPasswordAdmin, setNewPasswordAdmin] = useState("");
+
     useEffect(() => {
         fetchEmployees();
     }, []);
@@ -95,6 +99,12 @@ export default function Employees() {
         setEditRole(emp.role);
     };
 
+    const openPasswordModal = (emp) => {
+        setPasswordId(emp._id);
+        setNewPasswordAdmin("");
+        setShowPasswordModal(true);
+    };
+
     // Modifier un employé
     const updateEmployee = async () => {
         const token = localStorage.getItem("token");
@@ -117,6 +127,26 @@ export default function Employees() {
             fetchEmployees();
         }
     };
+    const updatePassword = async () => {
+        const token = localStorage.getItem("token");
+
+        const response = await fetch(`http://localhost:5000/api/employees/${passwordId}/password`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ newPassword: newPasswordAdmin })
+        });
+
+        if (response.ok) {
+            setShowPasswordModal(false);
+            setPasswordId(null);
+            setNewPasswordAdmin("");
+            fetchEmployees();
+        }
+    };
+
 
     const FilteredEmployees = employees.filter((emp) => {
         const query = search.toLowerCase().trim();
@@ -174,6 +204,13 @@ export default function Employees() {
                                         className="px-3 py-1 bg-yellow-500 text-white rounded hover:bg-yellow-600"
                                     >
                                         Modifier
+                                    </button>
+
+                                    <button
+                                        onClick={() => openPasswordModal(emp)}
+                                        className="px-3 py-1 bg-purple-600 text-white rounded hover:bg-purple-700"
+                                    >
+                                        Mot de passe
                                     </button>
 
                                     <button
@@ -241,6 +278,40 @@ export default function Employees() {
                     </div>
                 </div>
             )}
+            
+            {/* Modal chnager MDP */}
+            {showPasswordModal && (
+                <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center animate-fadeIn">
+                    <div className="bg-white p-6 rounded-xl shadow-xl w-96 animate-scaleIn">
+                        <h2 className="text-xl font-bold mb-4">Changer le mot de passe</h2>
+
+                        <input
+                            type="password"
+                            className="border p-2 rounded w-full mb-3"
+                            placeholder="Nouveau mot de passe"
+                            value={newPasswordAdmin}
+                            onChange={(e) => setNewPasswordAdmin(e.target.value)}
+                        />
+
+                        <div className="flex justify-between">
+                            <button
+                                onClick={updatePassword}
+                                className="bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700"
+                            >
+                                Sauvegarder
+                            </button>
+
+                            <button
+                                onClick={() => setShowPasswordModal(false)}
+                                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+                            >
+                                Annuler
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
 
             {/* Modal Modifier */}
             {editId && (

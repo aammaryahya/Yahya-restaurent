@@ -29,7 +29,7 @@ export default function ChefLayout({ children }) {
             <div className="flex-1">
                 {/* HEADER */}
                 <div className="bg-white shadow p-4 flex justify-between items-center">
-                    <h1 className="text-2xl font-bold">Chef Panel</h1>
+                    <h1 className="text-2xl font-bold">YAKA Restaurent</h1>
 
                     <Link
                         to="/chef"

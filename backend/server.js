@@ -1,7 +1,14 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-require("dotenv").config();
+const path = require("path");
+const dotenv = require("dotenv");
+
+dotenv.config({
+    path: process.env.NODE_ENV === "production"
+        ? path.resolve(__dirname, ".env.production")
+        : path.resolve(__dirname, ".env.development")
+});
 
 const app = express();
 
