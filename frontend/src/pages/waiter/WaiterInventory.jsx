@@ -23,7 +23,7 @@ export default function WaiterInventory() {
     const fetchInventory = async () => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/inventory", {
+        const res = await fetch("https://yahya-restaurent.onrender.com/api/inventory", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -37,7 +37,7 @@ export default function WaiterInventory() {
         const type = amount > 0 ? "in" : "out";
         const quantity = Math.abs(amount);
 
-        await fetch(`http://localhost:5000/api/inventory/${id}/transaction`, {
+        await fetch(`https://yahya-restaurent.onrender.com/api/inventory/${id}/transaction`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

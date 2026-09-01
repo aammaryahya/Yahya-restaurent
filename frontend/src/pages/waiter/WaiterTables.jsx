@@ -24,7 +24,7 @@ export default function WaiterTables() {
     const fetchTables = async () => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/tables", {
+        const res = await fetch("https://yahya-restaurent.onrender.com/api/tables", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -36,7 +36,7 @@ export default function WaiterTables() {
     const updateStatus = async (id, status) => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch(`http://localhost:5000/api/tables/${id}`, {
+        const res = await fetch(`https://yahya-restaurent.onrender.com/api/tables/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

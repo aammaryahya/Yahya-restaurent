@@ -28,7 +28,7 @@ export default function Orders() {
     const fetchOrders = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/orders", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/orders", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -39,7 +39,7 @@ export default function Orders() {
     const deleteOrder = async (id) => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/orders/${id}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/orders/${id}`, {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });

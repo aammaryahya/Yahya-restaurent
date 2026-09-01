@@ -37,7 +37,7 @@ export default function InventoryTransactions() {
     const fetchIngredients = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/inventory", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/inventory", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -53,7 +53,7 @@ export default function InventoryTransactions() {
     const fetchAdjustments = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/inventory/adjustments", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/inventory/adjustments", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -71,7 +71,7 @@ export default function InventoryTransactions() {
     const fetchAdjustmentsByIngredient = async (id) => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/inventory/adjustments/${id}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/inventory/adjustments/${id}`, {
             headers: { "Authorization": `Bearer ${token}` }
         });
 

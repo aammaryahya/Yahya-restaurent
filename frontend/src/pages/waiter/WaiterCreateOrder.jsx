@@ -35,7 +35,7 @@ export default function WaiterCreateOrder() {
     const fetchMenu = async () => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/menu", {
+        const res = await fetch("https://yahya-restaurent.onrender.com/api/menu", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -47,7 +47,7 @@ export default function WaiterCreateOrder() {
     const fetchTables = async () => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/tables", {
+        const res = await fetch("https://yahya-restaurent.onrender.com/api/tables", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -103,7 +103,7 @@ export default function WaiterCreateOrder() {
             return;
         }
 
-        const res = await fetch("http://localhost:5000/api/orders", {
+        const res = await fetch("https://yahya-restaurent.onrender.com/api/orders", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -126,7 +126,7 @@ export default function WaiterCreateOrder() {
             return;
         }
 
-        await fetch(`http://localhost:5000/api/tables/${selectedTableId}`, {
+        await fetch(`https://yahya-restaurent.onrender.com/api/tables/${selectedTableId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

@@ -40,7 +40,7 @@ export default function Employees() {
     const fetchEmployees = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/employees", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/employees", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -52,7 +52,7 @@ export default function Employees() {
     const addEmployee = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/auth/register", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/auth/register", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -80,7 +80,7 @@ export default function Employees() {
     const deleteEmployee = async (id) => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/auth/${id}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/auth/${id}`, {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
@@ -109,7 +109,7 @@ export default function Employees() {
     const updateEmployee = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/employees/${editId}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/employees/${editId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -130,7 +130,7 @@ export default function Employees() {
     const updatePassword = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/employees/${passwordId}/password`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/employees/${passwordId}/password`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

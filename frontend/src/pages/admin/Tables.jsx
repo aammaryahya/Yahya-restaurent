@@ -39,7 +39,7 @@ export default function Tables() {
     const fetchTables = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/tables", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/tables", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -59,7 +59,7 @@ export default function Tables() {
         }
 
 
-        const response = await fetch("http://localhost:5000/api/tables", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/tables", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -85,7 +85,7 @@ export default function Tables() {
     const deleteTable = async (id) => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/tables/${id}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/tables/${id}`, {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
@@ -108,7 +108,7 @@ export default function Tables() {
     const updateTable = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/tables/${editId}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/tables/${editId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

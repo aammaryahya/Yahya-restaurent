@@ -25,7 +25,7 @@ export default function CashierOrderDetails() {
     const fetchOrder = async () => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch(`http://localhost:5000/api/orders/${orderId}`, {
+        const res = await fetch(`https://yahya-restaurent.onrender.com/api/orders/${orderId}`, {
             headers: { Authorization: `Bearer ${token}` }
         });
 

@@ -41,7 +41,7 @@ export default function Waiter() {
         const token = localStorage.getItem("token");
 
         // COMMANDES
-        const ordersRes = await fetch("http://localhost:5000/api/orders", {
+        const ordersRes = await fetch("https://yahya-restaurent.onrender.com/api/orders", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const orders = await ordersRes.json();
@@ -54,7 +54,7 @@ export default function Waiter() {
         setDelivered(orders.filter(o => o.status === "delivered").length);
 
         // INVENTAIRE
-        const stockRes = await fetch("http://localhost:5000/api/inventory", {
+        const stockRes = await fetch("https://yahya-restaurent.onrender.com/api/inventory", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const stock = await stockRes.json();
@@ -64,7 +64,7 @@ export default function Waiter() {
         setLowStock(stock.filter(i => i.stock < i.minStock).length);
 
         // MENU
-        const menuRes = await fetch("http://localhost:5000/api/menu", {
+        const menuRes = await fetch("https://yahya-restaurent.onrender.com/api/menu", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const menu = await menuRes.json();

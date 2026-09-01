@@ -23,7 +23,7 @@ export default function MenuStatus() {
     const fetchMenu = async () => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/menu", {
+        const res = await fetch("https://yahya-restaurent.onrender.com/api/menu", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -34,7 +34,7 @@ export default function MenuStatus() {
     const toggleStatus = async (id, available) => {
         const token = localStorage.getItem("token");
 
-        await fetch(`http://localhost:5000/api/menu/${id}`, {
+        await fetch(`https://yahya-restaurent.onrender.com/api/menu/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

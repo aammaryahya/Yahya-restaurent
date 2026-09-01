@@ -44,10 +44,10 @@ export default function Dashboard() {
         const token = localStorage.getItem("token");
 
         const [ordersRes, tablesRes, ingredientsRes, menuRes] = await Promise.all([
-            fetch("http://localhost:5000/api/orders", { headers: { Authorization: `Bearer ${token}` } }),
-            fetch("http://localhost:5000/api/tables", { headers: { Authorization: `Bearer ${token}` } }),
-            fetch("http://localhost:5000/api/inventory", { headers: { Authorization: `Bearer ${token}` } }),
-            fetch("http://localhost:5000/api/menu", { headers: { Authorization: `Bearer ${token}` } })
+            fetch("https://yahya-restaurent.onrender.com/api/orders", { headers: { Authorization: `Bearer ${token}` } }),
+            fetch("https://yahya-restaurent.onrender.com/api/tables", { headers: { Authorization: `Bearer ${token}` } }),
+            fetch("https://yahya-restaurent.onrender.com/api/inventory", { headers: { Authorization: `Bearer ${token}` } }),
+            fetch("https://yahya-restaurent.onrender.com/api/menu", { headers: { Authorization: `Bearer ${token}` } })
         ]);
 
         setOrders(await ordersRes.json());

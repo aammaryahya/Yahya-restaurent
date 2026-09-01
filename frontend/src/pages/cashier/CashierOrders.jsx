@@ -24,7 +24,7 @@ export default function CashierOrders() {
     const fetchOrders = async () => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/orders", {
+        const res = await fetch("https://yahya-restaurent.onrender.com/api/orders", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -43,7 +43,7 @@ export default function CashierOrders() {
     const updateStatus = async (id, status) => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch(`http://localhost:5000/api/orders/${id}`, {
+        const res = await fetch(`https://yahya-restaurent.onrender.com/api/orders/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default function CashierOrders() {
         if (status === "paid") {
             const tableId = data.order.tableId._id;
 
-            await fetch(`http://localhost:5000/api/tables/${tableId}`, {
+            await fetch(`https://yahya-restaurent.onrender.com/api/tables/${tableId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

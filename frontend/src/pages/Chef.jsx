@@ -39,7 +39,7 @@ export default function Chef() {
         const token = localStorage.getItem("token");
 
         // Commandes
-        const ordersRes = await fetch("http://localhost:5000/api/orders", {
+        const ordersRes = await fetch("https://yahya-restaurent.onrender.com/api/orders", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const orders = await ordersRes.json();
@@ -48,7 +48,7 @@ export default function Chef() {
         setPreparing(orders.filter(o => o.status === "preparing").length);
 
         // Stock critique
-        const stockRes = await fetch("http://localhost:5000/api/inventory", {
+        const stockRes = await fetch("https://yahya-restaurent.onrender.com/api/inventory", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const stock = await stockRes.json();
@@ -56,7 +56,7 @@ export default function Chef() {
         setLowStock(stock.filter(i => i.stock < i.minStock).length);
 
         // Plats indisponibles
-        const menuRes = await fetch("http://localhost:5000/api/menu", {
+        const menuRes = await fetch("https://yahya-restaurent.onrender.com/api/menu", {
             headers: { Authorization: `Bearer ${token}` }
         });
         const menu = await menuRes.json();

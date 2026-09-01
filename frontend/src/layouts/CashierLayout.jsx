@@ -125,7 +125,7 @@ export default function CashierLayout({ children }) {
                                     const name = document.getElementById("profileName").value;
                                     const token = localStorage.getItem("token");
 
-                                    const res = await fetch("http://localhost:5000/api/auth/update-profile", {
+                                    const res = await fetch("https://yahya-restaurent.onrender.com/api/auth/update-profile", {
                                         method: "PUT",
                                         headers: {
                                             "Content-Type": "application/json",
@@ -180,7 +180,7 @@ export default function CashierLayout({ children }) {
 
                                     const token = localStorage.getItem("token");
 
-                                    const res = await fetch("http://localhost:5000/api/auth/change-password", {
+                                    const res = await fetch("https://yahya-restaurent.onrender.com/api/auth/change-password", {
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json",

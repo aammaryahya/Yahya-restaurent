@@ -45,7 +45,7 @@ export default function MenuItems() {
     const fetchItems = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/menu", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/menu", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -57,7 +57,7 @@ export default function MenuItems() {
     const addItem = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/menu", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/menu", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -87,7 +87,7 @@ export default function MenuItems() {
     const deleteItem = async (id) => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/menu/${id}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/menu/${id}`, {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
@@ -112,7 +112,7 @@ export default function MenuItems() {
     const updateItem = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/menu/${editId}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/menu/${editId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",

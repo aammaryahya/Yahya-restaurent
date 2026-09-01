@@ -48,7 +48,7 @@ export default function Inventory() {
     const fetchIngredients = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/inventory", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/inventory", {
             headers: { "Authorization": `Bearer ${token}` }
         });
 
@@ -59,7 +59,7 @@ export default function Inventory() {
     const addIngredient = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch("http://localhost:5000/api/inventory", {
+        const response = await fetch("https://yahya-restaurent.onrender.com/api/inventory", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export default function Inventory() {
     const updateIngredient = async () => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/inventory/${selectedIngredient._id}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/inventory/${selectedIngredient._id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -108,7 +108,7 @@ export default function Inventory() {
     const deleteIngredient = async (id) => {
         const token = localStorage.getItem("token");
 
-        const response = await fetch(`http://localhost:5000/api/inventory/${id}`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/inventory/${id}`, {
             method: "DELETE",
             headers: { "Authorization": `Bearer ${token}` }
         });
@@ -133,7 +133,7 @@ export default function Inventory() {
             return;
         }
 
-        const response = await fetch(`http://localhost:5000/api/inventory/${selectedIngredient._id}/transaction`, {
+        const response = await fetch(`https://yahya-restaurent.onrender.com/api/inventory/${selectedIngredient._id}/transaction`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

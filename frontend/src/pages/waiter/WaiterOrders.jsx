@@ -24,7 +24,7 @@ export default function WaiterOrders() {
     const fetchOrders = async () => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:5000/api/orders", {
+        const res = await fetch("https://yahya-restaurent.onrender.com/api/orders", {
             headers: { Authorization: `Bearer ${token}` }
         });
 
@@ -44,7 +44,7 @@ export default function WaiterOrders() {
     const updateStatus = async (id, status) => {
         const token = localStorage.getItem("token");
 
-        const res = await fetch(`http://localhost:5000/api/orders/${id}`, {
+        const res = await fetch(`https://yahya-restaurent.onrender.com/api/orders/${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export default function WaiterOrders() {
         if (status === "cancelled") {
             const tableId = data.order.tableId; 
 
-            await fetch(`http://localhost:5000/api/tables/${tableId}`, {
+            await fetch(`https://yahya-restaurent.onrender.com/api/tables/${tableId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
