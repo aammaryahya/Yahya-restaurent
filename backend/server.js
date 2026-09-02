@@ -9,7 +9,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: "https://yahya-restaurent-frontend.onrender.com",
+    credentials: true
+}));
 app.use(express.json());
 
 //routes
@@ -29,11 +32,20 @@ mongoose.connect(process.env.MONGO_URI)
 
 
 
-const http = require("http");
+// HTTP Server
 const server = http.createServer(app);
 
-const socket = require("./socket");
-const io = socket.init(server);
+// SOCKET.IO
+const { Server } = require("socket.io");
+const io = new Server(server, {
+    cors: {
+        origin: "https://yahya-restaurent-frontend.onrender.com",
+        methods: ["GET", "POST"],
+        credentials: true
+    }
+});
+
+global.io = io;
 
 io.on("connection", (socket) => {
     console.log("Client connected:", socket.id);
@@ -42,6 +54,11 @@ io.on("connection", (socket) => {
         console.log("Client disconnected:", socket.id);
     });
 });
+
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+module.exports = io;
 
 
 
