@@ -5,8 +5,9 @@ module.exports = {
         const { Server } = require("socket.io");
         io = new Server(server, {
             cors: {
-                origin: "http://localhost:5173",
-                methods: ["GET", "POST"]
+                origin: "https://yahya-restaurent-frontend.onrender.com",
+                methods: ["GET", "POST"],
+                credentials: true
             }
         });
         return io;
