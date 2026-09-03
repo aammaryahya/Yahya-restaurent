@@ -60,18 +60,25 @@ export default function WaiterOrders() {
             return;
         }
 
-        if (status === "cancelled") {
-            const tableId = data.order.tableId; 
+       if (status === "cancelled") {
+    const tableId =
+        data.order?.tableId?._id ||
+        data.order?.tableId ||
+        data.tableId ||
+        data.order?.table?._id;
 
-            await fetch(`https://yahya-restaurent.onrender.com/api/tables/${tableId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`
-                },
-                body: JSON.stringify({ status: "available" })
-            });
-        }
+    if (tableId) {
+        await fetch(`https://yahya-restaurent.onrender.com/api/tables/${tableId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`
+            },
+            body: JSON.stringify({ status: "available" })
+        });
+    }
+}
+
 
         fetchOrders();
     };

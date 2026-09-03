@@ -9,6 +9,7 @@ export function AuthProvider({ children }) {
         try {
             const response = await fetch("https://yahya-restaurent.onrender.com/api/auth/login", {
                 method: "POST",
+                credentials: "include",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ email, password }),
             });

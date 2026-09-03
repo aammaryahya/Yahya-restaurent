@@ -10,8 +10,16 @@ const app = express();
 
 app.use(cors({
     origin: "https://yahya-restaurent.vercel.app",
-    credentials: true
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"]
 }));
+app.use((req, res, next) => {
+    res.header("Access-Control-Allow-Origin", "https://yahya-restaurent.vercel.app");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+});
+
 app.use(express.json());
 
 app.use("/api/auth", require("./routes/authRoutes"));
