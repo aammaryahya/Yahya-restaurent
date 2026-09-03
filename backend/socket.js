@@ -5,7 +5,7 @@ module.exports = {
         const { Server } = require("socket.io");
         io = new Server(server, {
             cors: {
-                origin: "https://yahya-restaurent-frontend.onrender.com",
+                origin: "https://yahya-restaurent.vercel.app",
                 methods: ["GET", "POST"],
                 credentials: true
             }
