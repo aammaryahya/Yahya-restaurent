@@ -11,7 +11,7 @@ const app = express();
 
 // Middleware
 app.use(cors({
-    origin: "https://yahya-restaurent-frontend.onrender.com",
+    origin: "https://yahya-restaurent.vercel.app",
     credentials: true
 }));
 app.use(express.json());
