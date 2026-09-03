@@ -1,4 +1,4 @@
-const { getIO } = require("../socket");
+const io = global.io;
 const Order = require('../models/Order');
 
 // Get all kitchen orders
@@ -31,7 +31,7 @@ exports.updateKitchenStatus = async (req, res) => {
     try {
         const order = await Order.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true });
 
-        const io = getIO();
+        const io = global.io;
 
         io.emit("kitchenUpdated", { action: "update", order });
 

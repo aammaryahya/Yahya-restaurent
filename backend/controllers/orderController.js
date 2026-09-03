@@ -1,4 +1,4 @@
-const { getIO } = require("../socket");
+const io = global.io;
 const Order = require('../models/Order');
 const MenuItem = require('../models/MenuItem');
 
@@ -47,7 +47,7 @@ exports.createOrder = async (req, res) => {
             notes: notes || ""
         });
 
-        const io = getIO();        
+        const io = global.io;        
 
 
         io.emit("ordersUpdated", { action: "create", order });
@@ -75,7 +75,7 @@ exports.updateOrderStatus = async (req, res) => {
             return res.status(404).json({ message: "Order not found" });
         }
 
-        const io = getIO();
+        const io = global.io;
 
         io.emit("ordersUpdated", { action: "update", order });
 
@@ -90,7 +90,7 @@ exports.deleteOrder = async (req, res) => {
     try {
         await Order.findByIdAndDelete(req.params.id);
 
-        const io = getIO();
+        const io = global.io;
 
         io.emit("ordersUpdated", { action: "delete", id: req.params.id });
 
@@ -112,7 +112,7 @@ exports.updateOrderNotes = async (req, res) => {
         order.notes = req.body.notes;
         await order.save();
 
-        const io = getIO();
+        const io = global.io;
 
         io.emit("orderUpdated", { action: "updateNote", order });
 

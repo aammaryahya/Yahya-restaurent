@@ -1,4 +1,4 @@
-const { getIO } = require("../socket");
+const io = global.io;
 const MenuItem = require('../models/MenuItem');
 
 // Get all menu items       
@@ -15,7 +15,7 @@ exports.getMenu = async (req, res) => {
 exports.createMenuItem = async (req, res) => {
     try {
         const item = await MenuItem.create(req.body);
-        const io = getIO();
+        const io = global.io;
 
         io.emit("menuUpdated", { action: "create", item });
 
@@ -30,7 +30,7 @@ exports.createMenuItem = async (req, res) => {
 exports.updateMenuItem = async (req, res) => {
     try {
         const item = await MenuItem.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        const io = getIO();
+        const io = global.io;
 
         io.emit("menuUpdated", { action: "update", item });
 
@@ -44,7 +44,7 @@ exports.updateMenuItem = async (req, res) => {
 exports.deleteMenuItem = async (req, res) => {
     try {
         await MenuItem.findByIdAndDelete(req.params.id);
-        const io = getIO();
+        const io = global.io;
 
         io.emit("menuUpdated", { action: "delete", id: req.params.id });
 

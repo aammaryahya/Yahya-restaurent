@@ -1,4 +1,4 @@
-const { getIO } = require("../socket");
+const io = global.io;
 const Ingredient = require("../models/Ingredient");
 
 // Get all ingredients
@@ -15,7 +15,7 @@ exports.getIngredients = async (req, res) => {
 exports.createIngredient = async (req, res) => {
     try {
         const ingredient = await Ingredient.create(req.body);
-        const io = getIO();
+        const io = global.io;
 
         io.emit("inventoryUpdated", { action: "create", ingredient });
 
@@ -29,7 +29,7 @@ exports.createIngredient = async (req, res) => {
 exports.updateIngredient = async (req, res) => {
     try {
         const ingredient = await Ingredient.findByIdAndUpdate(req.params.id, req.body, { returnDocument: "after" });
-        const io = getIO();
+        const io = global.io;
 
         io.emit("inventoryUpdated", { action: "update", ingredient });
 
@@ -43,7 +43,7 @@ exports.updateIngredient = async (req, res) => {
 exports.deleteIngredient = async (req, res) => {
     try {
         await Ingredient.findByIdAndDelete(req.params.id);
-        const io = getIO();
+        const io = global.io;
 
         io.emit("inventoryUpdated", { action: "delete", ingredient });
 
@@ -105,7 +105,7 @@ exports.addTransaction = async (req, res) => {
 
         await ingredient.save();
 
-        const io = getIO();
+        const io = global.io;
         io.emit("inventoryUpdated", { action: "transaction", ingredient });
 
         res.json({ message: "Transaction enregistrée.", ingredient });

@@ -1,4 +1,4 @@
-const { getIO } = require("../socket");
+const io = global.io;
 const Payment = require('../models/Payments');
 const Order = require('../models/Order');
 
@@ -28,7 +28,7 @@ exports.createPayment = async (req, res) => {
             status: 'paid'
         });
 
-        const io = getIO();
+        const io = global.io;
 
         io.emit("paymentsUpdated", { action: "create", payment });
 
@@ -60,7 +60,7 @@ exports.refundPayment = async (req, res) => {
         payment.status = 'refunded';
         await payment.save();
 
-        const io = getIO();
+        const io = global.io;
 
         io.emit("paymentsUpdated", { action: "refund", payment });
 

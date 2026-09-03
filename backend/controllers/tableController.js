@@ -1,4 +1,4 @@
-const { getIO } = require("../socket");
+const io = global.io;
 const Table = require('../models/Table');
 
 // Get all tables
@@ -16,7 +16,7 @@ exports.createTable = async (req, res) => {
     try {
         const table = await Table.create(req.body);
 
-        const io = getIO();
+        const io = global.io;
 
         io.emit("tablesUpdated", { action: "create", table });
 
@@ -30,7 +30,7 @@ exports.createTable = async (req, res) => {
 exports.updateTable = async (req, res) => {
     try {
         const table = await Table.findByIdAndUpdate(req.params.id, req.body, { new: true });
-        const io = getIO();
+        const io = global.io;
 
         io.emit("tablesUpdated", { action: "update", table });
         res.json({ message: 'Table updated successfully', table });
@@ -43,7 +43,7 @@ exports.updateTable = async (req, res) => {
 exports.deleteTable = async (req, res) => {
     try {
         await Table.findByIdAndDelete(req.params.id);
-        const io = getIO();
+        const io = global.io;
 
         io.emit("tablesUpdated", { action: "delete", id: req.params.id });
         res.json({ message: 'Table deleted successfully' });
