@@ -75,9 +75,13 @@ exports.updateOrderStatus = async (req, res) => {
             return res.status(404).json({ message: "Order not found" });
         }
 
+        if (req.body.status === "cancelled" || req.body.status === "paid") {
+            await Table.findByIdAndUpdate(order.tableId._id, { status: "available" });
+        }
+
         const io = global.io;
 
-        io.emit("ordersUpdated", { action: "update", order });
+        io.emit("ordersUpdated", { action: "update", order, tableId: order.tableId._id });
 
         res.status(200).json({ message: 'Order status updated successfully', order });
     } catch (error) {
