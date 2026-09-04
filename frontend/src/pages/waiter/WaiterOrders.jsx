@@ -15,8 +15,13 @@ export default function WaiterOrders() {
             fetchOrders();
         });
 
+        socket.on("tablesUpdated", () => {
+            fetchOrders();
+        });
+
         return () => {
             socket.off("ordersUpdated");
+            socket.off("tablesUpdated");
         };
     }, []);
 
