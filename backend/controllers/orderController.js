@@ -1,6 +1,8 @@
 const io = global.io;
 const Order = require('../models/Order');
 const MenuItem = require('../models/MenuItem');
+const Table = require('../models/Table');
+
 
 //get all orders
 exports.getOrders = async (req, res) => {
@@ -70,7 +72,7 @@ exports.updateOrderStatus = async (req, res) => {
         )
             .populate("tableId")
             .populate("items.menuItemId");
-        
+
         if (!order) {
             return res.status(404).json({ message: "Order not found" });
         }
@@ -80,14 +82,19 @@ exports.updateOrderStatus = async (req, res) => {
         }
 
         const io = global.io;
-
         io.emit("ordersUpdated", { action: "update", order, tableId: order.tableId._id });
 
-        res.status(200).json({ message: 'Order status updated successfully', order });
+        res.status(200).json({
+            message: 'Order status updated successfully',
+            order,
+            tableId: order.tableId._id
+        });
+
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 //delete an order
 exports.deleteOrder = async (req, res) => {
