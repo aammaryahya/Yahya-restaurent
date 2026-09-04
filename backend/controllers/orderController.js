@@ -77,12 +77,19 @@ exports.updateOrderStatus = async (req, res) => {
             return res.status(404).json({ message: "Order not found" });
         }
 
+        const io = global.io;
+
         if (req.body.status === "cancelled" || req.body.status === "paid") {
-            await Table.findByIdAndUpdate(order.tableId._id, { status: "available" });
+            const updatedTable = await Table.findByIdAndUpdate(
+                order.tableId._id,
+                { status: "available" },
+                { new: true }
+            );
+
+            io.emit("tablesUpdated", { action: "update", table: updatedTable });
         }
 
-        const io = global.io;
-        io.emit("ordersUpdated", { action: "update", order, tableId: order.tableId._id });
+        io.emit("ordersUpdated", { action: "update", order });
 
         res.status(200).json({
             message: 'Order status updated successfully',
@@ -94,6 +101,7 @@ exports.updateOrderStatus = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 
 //delete an order
