@@ -21,6 +21,7 @@ export function AuthProvider({ children }) {
             }
 
             localStorage.setItem("token", data.token);
+            reconnectSocket();
             localStorage.setItem("user", JSON.stringify(data.user));
 
             setUser(data.user);
@@ -35,6 +36,7 @@ export function AuthProvider({ children }) {
         setUser(null);
         localStorage.removeItem("user");
         localStorage.removeItem("token");
+        socket.disconnect();
     };
 
     useEffect(() => {

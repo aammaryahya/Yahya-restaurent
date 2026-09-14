@@ -1,17 +1,44 @@
-import { useContext } from "react";
 import { Navigate } from "react-router-dom";
-import { AuthContext } from "../context/AuthContext.jsx";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function ProtectedRoute({ children, requiredRole }) {
-    const { user } = useContext(AuthContext);
+    const [isValid, setIsValid] = useState(null);
+    const token = localStorage.getItem("token");
 
-    // Pas connecté → login
-    if (!user) {
-        return <Navigate to="/login" replace />;
+    useEffect(() => {
+        if (!token) {
+            setIsValid(false);
+            return;
+        }
+
+        axios.get("https://yahya-restaurent.onrender.com/api/auth/profile", {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
+            .then((res) => {
+                const user = res.data;
+
+                // Vérifier le rôle
+                if (requiredRole && user.role !== requiredRole) {
+                    setIsValid(false);
+                    return;
+                }
+
+                setIsValid(true);
+            })
+            .catch(() => {
+                localStorage.removeItem("token");
+                setIsValid(false);
+            });
+    }, [token]);
+
+    if (isValid === null) {
+        return null; // tu peux mettre un loader si tu veux
     }
 
-    // Mauvais rôle → login
-    if (requiredRole && user.role !== requiredRole) {
+    if (!isValid) {
         return <Navigate to="/login" replace />;
     }
 
