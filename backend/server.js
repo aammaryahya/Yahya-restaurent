@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const http = require("http");
+const jwt = require("jsonwebtoken");
 
 dotenv.config();
 
@@ -48,11 +49,24 @@ const io = new Server(server, {
 
 global.io = io;
 
+io.use((socket, next) => {
+    const token = socket.handshake.auth.token;
+    if (!token) return next(new Error("No token"));
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        socket.user = decoded; // 🔥 On attache le user
+        next();
+    } catch (err) {
+        next(new Error("Invalid token"));
+    }
+});
+
 io.on("connection", (socket) => {
-    console.log("Client connected:", socket.id);
+    console.log(`User connected: ${socket.user.name} (${socket.user.role})`);
 
     socket.on("disconnect", () => {
-        console.log("Client disconnected:", socket.id);
+        console.log(`User disconnected: ${socket.user.name} (${socket.user.role})`);
     });
 });
 
